@@ -1,21 +1,24 @@
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+import AppNavigator from './app/navigations/Navigator'
+import * as Font from 'expo-font';
+import {AppLoading} from 'expo'
 
-export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
+export default class App extends React.Component{
+  state = {
+    isFontLoaded : false
+  }
+  async componentDidMount(){
+    await Font.loadAsync({
+      'RobotoBold' : require('./app/fonts/Roboto-Bold.ttf'),
+      'RobotoRegular' : require('./app/fonts/Roboto-Regular.ttf'),
+    });
+    this.setState({isFontLoaded:true})
+  }
+  render(){
+    return(
+      (this.state.isFontLoaded === true) ? (<AppNavigator/>):(<AppLoading/>)
+    );
+  }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
